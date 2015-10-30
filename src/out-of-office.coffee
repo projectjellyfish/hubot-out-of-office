@@ -35,13 +35,17 @@ module.exports = (robot) ->
     users = [{id: "alice"}, {id: "bob"}, {id: "andrew"}] if Object.keys(users).length == 0
 
     results = []
-    users.forEach (user) ->
-      status = robot.brain.get("#{user.id}.ooo")
+    i = 0
+    while i < users.length
+      status = robot.brain.get("#{users[i].id}.ooo")
       status = "in" if status == null
-      results.push {user: user.id, status: status}
+      results.push {user: users[i].id, status: status}
+      i++
 
     response = ""
-    results.forEach (result) ->
-      response += "#{result.user} is #{result.status}\n"
+    i = 0
+    while i < results.length
+      response += "#{results[i].user} is #{results[i].status}\n"
+      i++
 
     res.reply "\n#{response}"
