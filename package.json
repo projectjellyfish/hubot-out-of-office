@@ -12,9 +12,6 @@
   "bugs": {
     "url": "https://github.com/hubot-scripts/hubot-out-of-office/issues"
   },
-  "dependencies": {
-    "chai-things": "^0.2.0"
-  },
   "peerDependencies": {
     "hubot": "2.x"
   },
@@ -31,7 +28,8 @@
     "matchdep": "~0.3.0",
     "mocha": "^2.1.0",
     "sinon": "^1.13.0",
-    "sinon-chai": "^2.7.0"
+    "sinon-chai": "^2.7.0",
+    "chai-things": "^0.2.0"
   },
   "main": "index.coffee",
   "scripts": {
