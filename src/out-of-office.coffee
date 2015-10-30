@@ -42,4 +42,9 @@ module.exports = (robot) ->
       response += "#{results[i].name} is #{results[i].status}\n"
       i++
 
-    res.reply "\n#{response}"
+    i
+
+    if response.length == 0
+      res.reply 'everybody should be in...'
+    else
+      res.reply "\n#{response}"

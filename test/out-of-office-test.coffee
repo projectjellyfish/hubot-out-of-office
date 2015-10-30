@@ -102,3 +102,10 @@ describe 'out-of-office', ->
       expect(room.messages).to.include.something.eql ['hubot', "@geoff #{expected}"]
       expect(room.messages).to.include.something.eql ['hubot', "@grace #{expected}"]
 
+  context 'everybody is in', ->
+    beforeEach ->
+      room.user.say 'alice', 'hubot where\'s everybody?'
+
+    it 'responds that everybody is in', ->
+      expect(room.messages).to.include.something.eql ['hubot', "@alice everybody should be in..."]
+
