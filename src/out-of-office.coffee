@@ -18,21 +18,23 @@
 
 module.exports = (robot) ->
 
-  robot.respond /I('m| am) (ooo|out of (the )?office)/i, (res) ->
+  robot.respond /I(\'m| am) (ooo|out of (the )?office)/i, (res) ->
     robot.brain.set("#{res.message.user.name}.ooo", "out of office")
     res.reply "out of office"
 
-  robot.respond /I('m| am) on (holiday|vacation)/i, (res) ->
+  robot.respond /I(\'m| am) on (holiday|vacation)/i, (res) ->
     robot.brain.set("#{res.message.user.name}.ooo", "on holiday")
     res.reply "on holiday"
 
-  robot.respond /I('m| am) back/i, (res) ->
+  robot.respond /I(\'m| am) back/i, (res) ->
     robot.brain.remove("#{res.message.user.name}.ooo")
     res.reply "welcome back!"
 
-  robot.respond /where('s| is) every(one|body)\??/i, (res) ->
+  robot.respond /where(\'s| is) every(one|body)\??/i, (res) ->
     users = robot.brain.users()
     users = [{id: "alice"}, {id: "bob"}, {id: "andrew"}] if Object.keys(users).length == 0
+
+    console.dir(users)
 
     results = []
     i = 0
