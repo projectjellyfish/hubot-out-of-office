@@ -32,22 +32,22 @@ module.exports = (robot) ->
 
   robot.respond /where(\'s| is) every(one|body)\??/i, (res) ->
     users = robot.brain.users()
-    users = [{id: "alice"}, {id: "bob"}, {id: "andrew"}] if Object.keys(users).length == 0
+    users = [{slack: {name: "alice"}}, {slack: {name: "bob"}}, {slack: {name: "andrew"}}] if Object.keys(users).length == 0
 
     console.dir(users)
 
     results = []
     i = 0
     while i < users.length
-      status = robot.brain.get("#{users[i].id}.ooo")
+      status = robot.brain.get("#{users[i].slack.name}.ooo")
       status = "in" if status == null
-      results.push {user: users[i].id, status: status}
+      results.push {user: users[i].slack.name, status: status}
       i++
 
     response = ""
     i = 0
     while i < results.length
-      response += "#{results[i].user} is #{results[i].status}\n"
+      response += "#{results[i].name} is #{results[i].status}\n"
       i++
 
     res.reply "\n#{response}"
