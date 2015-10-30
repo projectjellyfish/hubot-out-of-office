@@ -16,8 +16,11 @@
 
 module.exports = (robot) ->
 
-  robot.respond /(I'm|I am) (ooo|out of (the )?office)/i, (res) ->
+  robot.respond /I('m| am) (ooo|out of (the )?office)/i, (res) ->
     res.reply "out of office"
 
-  robot.respond /(I'm|I am) on (holiday|vacation)/i, (res) ->
+  robot.respond /I('m| am) on (holiday|vacation)/i, (res) ->
     res.reply "on holiday"
+
+  robot.respond /I('m| am) back/i, (res) ->
+    res.reply "welcome back!"

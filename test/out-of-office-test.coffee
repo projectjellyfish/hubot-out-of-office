@@ -42,3 +42,15 @@ describe 'out-of-office', ->
       expect(room.messages).to.include.something.eql ['hubot', '@dave on holiday']
       expect(room.messages).to.include.something.eql ['hubot', '@geoff on holiday']
       expect(room.messages).to.include.something.eql ['hubot', '@grace on holiday']
+
+  context 'user tells hubot they are back', ->
+    beforeEach ->
+      room.user.say 'alice', 'hubot I\'m back'
+      room.user.say 'bob', 'hubot I am back'
+      room.user.say 'dave', 'hubot I AM BACK'
+
+    it 'responds <user> welcome back!', ->
+      expect(room.messages).to.include.something.eql ['hubot', '@alice welcome back!']
+      expect(room.messages).to.include.something.eql ['hubot', '@bob welcome back!']
+      expect(room.messages).to.include.something.eql ['hubot', '@dave welcome back!']
+
