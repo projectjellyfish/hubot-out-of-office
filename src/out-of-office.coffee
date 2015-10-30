@@ -5,9 +5,9 @@
 #   LIST_OF_ENV_VARS_TO_SET
 #
 # Commands:
-#   hubot I'm out of the office
-#   hubot I'm on holiday
-#   hubot I'm back
+#   hubot I am out of office
+#   hubot I am on holiday
+#   hubot I am back
 #   hubot Where is everybody?
 #
 # Notes:
