@@ -31,18 +31,11 @@ module.exports = (robot) ->
     res.reply "welcome back!"
 
   robot.respond /where(\'s| is) every(one|body)\??/i, (res) ->
-    users = robot.brain.users()
-    users = [{aaa: {slack: {name: "alice"}}}, {bbb: {slack: {name: "bob"}}}, {ccc: {slack: {name: "andrew"}}}] if Object.keys(users).length == 0
-
     results = []
-    i = 0
-    while i < users.length
-      for key of users[i]
-        if users[i].hasOwnProperty(key)
-          status = robot.brain.get("#{users[i][key].slack.name}.ooo")
-          status = "in" if status == null
-          results.push {name: users[i][key].slack.name, status: status}
-      i++
+    for own key, user of robot.brain.data.users
+      status = robot.brain.get("#{user.name}.ooo")
+      status = "in" if status == null
+      results.push {name: user.name, status: status}
 
     response = ""
     i = 0
