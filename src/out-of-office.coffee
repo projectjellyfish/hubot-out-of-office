@@ -18,3 +18,6 @@ module.exports = (robot) ->
 
   robot.respond /(I'm|I am) (ooo|out of (the )?office)/i, (res) ->
     res.reply "out of office"
+
+  robot.respond /(I'm|I am) on (holiday|vacation)/i, (res) ->
+    res.reply "on holiday"
