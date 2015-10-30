@@ -28,6 +28,9 @@ describe 'out-of-office', ->
       expect(room.messages).to.include.something.eql ['hubot', '@geoff out of office']
       expect(room.messages).to.include.something.eql ['hubot', '@grace out of office']
 
+      expect(room.robot.brain.get("alice.ooo")).to.equal('out of office')
+      expect(room.robot.brain.get("andrew.ooo")).to.be.null
+
   context 'user tells hubot they are on holiday', ->
     beforeEach ->
       room.user.say 'alice', 'hubot I\'m on holiday'
@@ -43,8 +46,14 @@ describe 'out-of-office', ->
       expect(room.messages).to.include.something.eql ['hubot', '@geoff on holiday']
       expect(room.messages).to.include.something.eql ['hubot', '@grace on holiday']
 
+      expect(room.robot.brain.get("alice.ooo")).to.equal('on holiday')
+      expect(room.robot.brain.get("andrew.ooo")).to.be.null
+
   context 'user tells hubot they are back', ->
     beforeEach ->
+      room.user.say 'alice', 'hubot I\'m on holiday'
+      room.user.say 'bob', 'hubot I\'m out of office'
+      room.user.say 'andrew', 'hubot I\'m out of office'
       room.user.say 'alice', 'hubot I\'m back'
       room.user.say 'bob', 'hubot I am back'
       room.user.say 'dave', 'hubot I AM BACK'
@@ -54,18 +63,27 @@ describe 'out-of-office', ->
       expect(room.messages).to.include.something.eql ['hubot', '@bob welcome back!']
       expect(room.messages).to.include.something.eql ['hubot', '@dave welcome back!']
 
+      expect(room.robot.brain.get("alice.ooo")).to.be.null
+      expect(room.robot.brain.get("bob.ooo")).to.be.null
+      expect(room.robot.brain.get("andrew.ooo")).to.equal("out of office")
+
+
   context 'users asks where everybody is', ->
     beforeEach ->
+      room.user.say 'alice', 'hubot I\'m on holiday'
+      room.user.say 'bob', 'hubot I\'m out of office'
       room.user.say 'alice', 'hubot where\'s everybody?'
       room.user.say 'bob', 'hubot where is everyone'
       room.user.say 'dave', 'hubot where\'s everyone'
       room.user.say 'geoff', 'hubot where is everybody'
       room.user.say 'grace', 'hubot WHERE IS EVERYBODY'
 
-    it 'responds <user> I don\'t know', ->
-      expect(room.messages).to.include.something.eql ['hubot', '@alice I don\'t know']
-      expect(room.messages).to.include.something.eql ['hubot', '@bob I don\'t know']
-      expect(room.messages).to.include.something.eql ['hubot', '@dave I don\'t know']
-      expect(room.messages).to.include.something.eql ['hubot', '@geoff I don\'t know']
-      expect(room.messages).to.include.something.eql ['hubot', '@grace I don\'t know']
+    it 'responds with where everybody is', ->
+      expected = "\nalice is on holiday\nbob is out of office\nandrew is in\n"
+
+      expect(room.messages).to.include.something.eql ['hubot', "@alice #{expected}"]
+      expect(room.messages).to.include.something.eql ['hubot', "@bob #{expected}"]
+      expect(room.messages).to.include.something.eql ['hubot', "@dave #{expected}"]
+      expect(room.messages).to.include.something.eql ['hubot', "@geoff #{expected}"]
+      expect(room.messages).to.include.something.eql ['hubot', "@grace #{expected}"]
 
