@@ -5,10 +5,10 @@
 #   LIST_OF_ENV_VARS_TO_SET
 #
 # Commands:
-#   I'm out of the office
-#   I'm on holiday
-#   I'm back
-#   Where is everybody?
+#   hubot I'm out of the office
+#   hubot I'm on holiday
+#   hubot I'm back
+#   hubot Where is everybody?
 #
 # Notes:
 #   <optional notes required for the script>
