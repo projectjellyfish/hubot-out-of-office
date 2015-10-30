@@ -21,6 +21,16 @@ Then add **hubot-out-of-office** to your `external-scripts.json`:
 ## Sample Interaction
 
 ```
-user1>> hubot I'm ooo
-hubot>> @user is out of office
+user1>> hubot I am out of office
+hubot>> @user1 is out of office
+
+user1>> hubot I am back
+hubot>> welcome back!
+
+user1>> hubot I am on holiday
+hubot>> @user1 on holiday
+
+user1>> hubot where is everybody?
+hubot>> @user1:
+John Smith is on holiday
 ```
