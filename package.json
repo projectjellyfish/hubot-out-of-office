@@ -7,7 +7,7 @@
   "keywords": "hubot, hubot-scripts, holiday, ooo, wfh",
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-out-of-office.git"
+    "url": "git://github.com/typingincolor/hubot-out-of-office.git"
   },
   "bugs": {
     "url": "https://github.com/hubot-scripts/hubot-out-of-office/issues"
