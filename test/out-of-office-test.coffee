@@ -9,6 +9,20 @@ room = null
 describe 'out-of-office', ->
   beforeEach ->
     room = helper.createRoom()
+    room.robot.brain.data.users = [
+      {
+        name: "alice"
+        real_name: "Alice Smith"
+      }
+      {
+        name: "bob"
+        real_name: "Bob Jones"
+      }
+      {
+        name: "grace"
+        real_name: "Grace Davies"
+        }
+      ]
 
   afterEach ->
     room.destroy()
@@ -68,7 +82,7 @@ describe 'out-of-office', ->
       expect(room.robot.brain.get("andrew.ooo")).to.equal("out of office")
 
 
-  context 'users asks where everybody is', ->
+  context 'user asks where everybody is', ->
     beforeEach ->
       room.user.say 'alice', 'hubot I\'m on holiday'
       room.user.say 'bob', 'hubot I\'m out of office'
@@ -78,8 +92,9 @@ describe 'out-of-office', ->
       room.user.say 'geoff', 'hubot where is everybody'
       room.user.say 'grace', 'hubot WHERE IS EVERYBODY'
 
+
     it 'responds with where everybody is', ->
-      expected = "\nalice is on holiday\nbob is out of office\nandrew is in\n"
+      expected = "\nAlice Smith is on holiday\nBob Jones is out of office\n"
 
       expect(room.messages).to.include.something.eql ['hubot', "@alice #{expected}"]
       expect(room.messages).to.include.something.eql ['hubot', "@bob #{expected}"]
