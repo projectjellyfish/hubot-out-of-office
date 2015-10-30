@@ -33,6 +33,7 @@ module.exports = (robot) ->
   robot.respond /where(\'s| is) every(one|body)\??/i, (res) ->
     results = []
     for own key, user of robot.brain.data.users
+      console.dir user
       status = robot.brain.get("#{user.name}.ooo")
       status = "in" if status == null
       results.push {name: user.name, status: status}
