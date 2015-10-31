@@ -5,10 +5,11 @@
 #   LIST_OF_ENV_VARS_TO_SET
 #
 # Commands:
-#   hubot I am out of office
-#   hubot I am on holiday
-#   hubot I am back
-#   hubot Where is everybody?
+#   hubot I am out of office - tell hubot you are out of the office
+#   hubot I am on holiday - tell hubot you are on holiday
+#   hubot I am working from home - tell hubot you are working from home
+#   hubot I am back - tell hubot you are back
+#   hubot Where is everybody? - ask hubot where everybody is
 #
 # Notes:
 #   <optional notes required for the script>
@@ -25,6 +26,10 @@ module.exports = (robot) ->
   robot.respond /I(\'m| am) on (holiday|vacation)/i, (res) ->
     robot.brain.set("#{res.message.user.name}.ooo", "on holiday")
     res.reply "on holiday"
+
+  robot.respond /I(\'m| am) (wfh|working from home)/i, (res) ->
+    robot.brain.set("#{res.message.user.name}.ooo", "working from home")
+    res.reply "working from home"
 
   robot.respond /I(\'m| am) back/i, (res) ->
     robot.brain.remove("#{res.message.user.name}.ooo")

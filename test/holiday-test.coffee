@@ -9,20 +9,6 @@ room = null
 describe 'users go on holiday', ->
   beforeEach ->
     room = helper.createRoom()
-    room.robot.brain.data.users = [
-      {
-        name: "alice"
-        real_name: "Alice Smith"
-      }
-      {
-        name: "bob"
-        real_name: "Bob Jones"
-      }
-      {
-        name: "grace"
-        real_name: "Grace Davies"
-        }
-      ]
 
   afterEach ->
     room.destroy()
