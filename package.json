@@ -1,7 +1,7 @@
 {
   "name": "hubot-out-of-office",
   "description": "Keeps track of who is working from home, who is out of the office, and who is on holiday",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Andrew Braithwaite <andrew@losd.info>",
   "license": "MIT",
   "keywords": "hubot, hubot-scripts, holiday, ooo, wfh",
