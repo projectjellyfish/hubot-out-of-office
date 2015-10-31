@@ -30,7 +30,10 @@ hubot>> welcome back!
 user1>> hubot I am on holiday
 hubot>> @user1 on holiday
 
+user1>> hubot I am working from home
+hubot>> @user1 working from home
+
 user1>> hubot where is everybody?
-hubot>> @user1:
+hubot>> 
 John Smith is on holiday
 ```
