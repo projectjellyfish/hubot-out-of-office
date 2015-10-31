@@ -41,13 +41,9 @@ module.exports = (robot) ->
       status = robot.brain.get("#{user.name}.ooo")
       results.push {name: user.real_name, status: status} if status != null
 
-    response = ""
-    i = 0
-    while i < results.length
-      response += "#{results[i].name} is #{results[i].status}\n"
-      i++
+    response = results.reduce(((x,y) -> x + "#{y.name} is #{y.status}\n"), "")
 
     if response.length == 0
       res.send 'everybody should be in...'
     else
-      res.send "\n#{response}"
+      res.send "#{response}"

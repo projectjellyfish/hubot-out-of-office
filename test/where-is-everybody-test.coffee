@@ -6,7 +6,7 @@ expect = chai.expect
 chai.use(require('chai-things'))
 
 room = null
-expected = "\nAlice Smith is on holiday\nBob Jones is out of office\nAndrew Davies is working from home\n"
+expected = "Alice Smith is on holiday\nBob Jones is out of office\nAndrew Davies is working from home\n"
 
 context 'where is everybody', ->
   beforeEach ->
