@@ -45,6 +45,6 @@ module.exports = (robot) ->
     i
 
     if response.length == 0
-      res.reply 'everybody should be in...'
+      res.send 'everybody should be in...'
     else
-      res.reply "\n#{response}"
+      res.send "\n#{response}"
