@@ -10,7 +10,7 @@
     "url": "git://github.com/typingincolor/hubot-out-of-office.git"
   },
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-out-of-office/issues"
+    "url": "https://github.com/typingincolor/hubot-out-of-office/issues"
   },
   "peerDependencies": {
     "hubot": "2.x"
