@@ -31,6 +31,10 @@ module.exports = (robot) ->
     robot.brain.set("#{res.message.user.name}.ooo", "working from home")
     res.reply "working from home"
 
+  robot.respond /I(\'m| am) sick/i, (res) ->
+    robot.brain.set("#{res.message.user.name}.ooo", "sick")
+    res.reply "get well soon!"
+
   robot.respond /I(\'m| am) back/i, (res) ->
     robot.brain.remove("#{res.message.user.name}.ooo")
     res.reply "welcome back!"
