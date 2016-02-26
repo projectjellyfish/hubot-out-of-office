@@ -8,6 +8,7 @@
 #   hubot I am out of office - tell hubot you are out of the office
 #   hubot I am on holiday - tell hubot you are on holiday
 #   hubot I am working from home - tell hubot you are working from home
+#   hubot I am traveling - tell hubot you are on business travel
 #   hubot I am sick - tell hubot you are sick
 #   hubot I am back - tell hubot you are back
 #   hubot Where is everybody? - ask hubot where everybody is
@@ -40,6 +41,11 @@ module.exports = (robot) ->
   robot.respond /I(\'m| am) back/i, (res) ->
     robot.brain.remove("#{res.message.user.name}.ooo")
     res.reply "welcome back!"
+   
+  robot.respond /I(\'m| am) (ot|traveling|on travel)/i, (res) ->
+    robot.brain.set("#{res.message.user.name.toLowerCase()}.ooo", "on business travel")
+    res.reply "on business travel" 
+    
 
   robot.respond /where(\'s| is) @([\w.-]*)\??/i, (res) ->
     username = res.match[2]
@@ -54,6 +60,18 @@ module.exports = (robot) ->
   robot.respond /where(\'s| is) every(one|body)\??/i, (res) ->
     results = []
     for own key, user of robot.brain.data.users
+      status = robot.brain.get("#{user.name.toLowerCase()}.ooo")
+      results.push {name: user.real_name, status: status} if status?
+
+    response = results.reduce(((x,y) -> x + "#{y.name} is #{y.status}\n"), "")
+
+    return res.send 'everybody should be in...' unless !!response
+    res.send "#{response}" 
+
+  robot.respond /(reset|reset status)/i, (res) ->
+    results = []
+    for own key, user of robot.brain.data.users
+      robot.brain.remove("#{user.name}.ooo")
       status = robot.brain.get("#{user.name.toLowerCase()}.ooo")
       results.push {name: user.real_name, status: status} if status?
 

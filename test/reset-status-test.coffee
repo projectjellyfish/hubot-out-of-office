@@ -45,42 +45,11 @@ context 'where is everybody', ->
       it 'should respond that Alice, John, Bob and Andrew are out', ->
         expect(room.messages).to.include.something.eql ['hubot', "#{expected}"]
 
-    describe 'bob asks where everybody is', ->    
+   
+  describe 'everyone\'s status is reset to in', ->
+    describe 'grace resets status', ->
       beforeEach ->
-        room.user.say 'bob', 'hubot where is everyone'
-
-      it 'should respond that Alice, John, Bob and Andrew are out', ->
-        expect(room.messages).to.include.something.eql ['hubot', "#{expected}"]
-
-    describe 'dave asks where everybody is', ->    
-      beforeEach ->
-        room.user.say 'dave', 'hubot where\'s everyone'
-
-      it 'should respond that Alice, John, Bob and Andrew are out', ->
-        expect(room.messages).to.include.something.eql ['hubot', "#{expected}"]      
-
-    describe 'geoff asks where everybody is', ->    
-      beforeEach ->
-        room.user.say 'geoff', 'hubot where is everybody'
-
-      it 'should respond that Alice, John, Bob and Andrew are out', ->
-        expect(room.messages).to.include.something.eql ['hubot', "#{expected}"]   
-
-    describe 'grace asks where everybody is', ->    
-      beforeEach ->
-        room.user.say 'grace', 'hubot WHERE IS EVERYBODY'
-
-      it 'should respond that Alice, John, Bob and Andrew are out', ->
-        expect(room.messages).to.include.something.eql ['hubot', "#{expected}"]      
-
-  describe 'alice, bob and andrew are back', ->
-    describe 'grace asks where everybody is', ->
-      beforeEach ->
-        room.user.say 'bob', 'hubot I am back'
-        room.user.say 'alice', 'hubot I am back'
-        room.user.say 'andrew', 'hubot I am back'
-        room.user.say 'john', 'hubot I am back'
-        
+        room.user.say 'grace', 'hubot reset'        
         room.user.say 'grace', 'hubot where\'s everybody?'
 
       it 'responds that everybody is in', ->
