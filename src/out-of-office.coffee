@@ -13,6 +13,7 @@
 #   hubot I am back - tell hubot you are back
 #   hubot Where is everybody? - ask hubot where everybody is
 #   hubot Where is @user1? - ask hubot where user1 is
+#   hubot reset - resets everyone's status to in
 #
 # Notes:
 #   <optional notes required for the script>
