@@ -72,11 +72,6 @@ module.exports = (robot) ->
   robot.respond /(reset|reset status)/i, (res) ->
     results = []
     for own key, user of robot.brain.data.users
-      robot.brain.remove("#{user.name}.ooo")
-      status = robot.brain.get("#{user.name.toLowerCase()}.ooo")
-      results.push {name: user.real_name, status: status} if status?
-
-    response = results.reduce(((x,y) -> x + "#{y.name} is #{y.status}\n"), "")
-
-    return res.send 'everybody should be in...' unless !!response
-    res.send "#{response}" 
+      robot.brain.remove("#{user.name.toLowerCase()}.ooo")
+    return res.send 'status reset, everybody should be in...'
+    
