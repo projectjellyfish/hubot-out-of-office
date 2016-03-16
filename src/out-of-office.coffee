@@ -13,39 +13,48 @@
 #   hubot I am back - tell hubot you are back
 #   hubot Where is everybody? - ask hubot where everybody is
 #   hubot Where is @user1? - ask hubot where user1 is
-#   hubot reset - resets everyone's status to in
+#   hubot it's a new day - resets everyone's status to in for a fresh day of fun
+#   hubot HARDRESET - forces reset for all users
+
+# use till / until on to set future date?
 #
 # Notes:
 #   <optional notes required for the script>
 #
 # Author:
-#   Andrew Braithwaite <andrew.braithwaite@laterooms.com>
+#   Jason Nichols (jasonnic@gmail.com)  
+#      orig - Andrew Braithwaite <andrew.braithwaite@laterooms.com>
+#robot.respond /open the (.*) doors/i, (res) ->
+    # doorType = res.match[1]
+    # if doorType is "pod bay"
+    #   res.reply "I'm afraid I can't let you do that."
+    # else
+    #   res.reply "Opening #{doorType} doors" 
+chrono = require 'chrono-node'
+moment = require 'moment'
+util = require 'util'
+
 
 module.exports = (robot) ->
+  robot.respond /I(?:\'m| am) (?:ooo|out of (?:the )?office)(?: (?:until|till) (.*$))?/i, (res) ->
+    setUntilDate robot, res, "out of office" 
 
-  robot.respond /I(\'m| am) (ooo|out of (the )?office)/i, (res) ->
-    robot.brain.set("#{res.message.user.name.toLowerCase()}.ooo", "out of office")
-    res.reply "out of office"
+  robot.respond /I(?:\'m| am) on (?:holiday|vacation)(?: (?:until|till) (.*$))?/i, (res) ->
+    setUntilDate robot, res, "on holiday" 
 
-  robot.respond /I(\'m| am) on (holiday|vacation)/i, (res) ->
-    robot.brain.set("#{res.message.user.name.toLowerCase()}.ooo", "on holiday")
-    res.reply "on holiday"
 
-  robot.respond /I(\'m| am) (wfh|working from home)/i, (res) ->
-    robot.brain.set("#{res.message.user.name.toLowerCase()}.ooo", "working from home")
-    res.reply "working from home"
+  robot.respond /I(?:\'m| am) (?:wfh|working from home)(?: (?:until|till) (.*$))?/i, (res) ->
+    setUntilDate robot, res, "working from home"
 
-  robot.respond /I(\'m| am) sick/i, (res) ->
-    robot.brain.set("#{res.message.user.name.toLowerCase()}.ooo", "sick")
-    res.reply "get well soon!"
+  robot.respond /I(?:\'m| am) sick(?: (?:until|till) (.*$))?/i, (res) ->
+    setUntilDate robot, res, "get well soon!"
 
   robot.respond /I(\'m| am) back/i, (res) ->
     robot.brain.remove("#{res.message.user.name}.ooo")
     res.reply "welcome back!"
    
-  robot.respond /I(\'m| am) (ot|traveling|on travel)/i, (res) ->
-    robot.brain.set("#{res.message.user.name.toLowerCase()}.ooo", "on business travel")
-    res.reply "on business travel" 
+  robot.respond /I(?:\'m| am) (?:ot|traveling|on travel)(?: (?:until|till) (.*$))?/i, (res) ->
+    setUntilDate robot, res, "on business travel" 
     
 
   robot.respond /where(\'s| is) @([\w.-]*)\??/i, (res) ->
@@ -62,16 +71,60 @@ module.exports = (robot) ->
     results = []
     for own key, user of robot.brain.data.users
       status = robot.brain.get("#{user.name.toLowerCase()}.ooo")
-      results.push {name: user.real_name, status: status} if status?
-
-    response = results.reduce(((x,y) -> x + "#{y.name} is #{y.status}\n"), "")
-
+      if status?
+        robot.logger.debug("Status: #{status}")
+        untilDate = robot.brain.get("#{user.name.toLowerCase()}.ooo.until")
+        if untilDate?
+            robot.logger.debug("status until #{untilDate}") if untilDate?
+            results.push {name: user.real_name, status: status, until: untilDate}
+        else
+            results.push {name: user.real_name, status: status}
+    robot.logger.debug("Results: #{util.inspect(results)}")    
+    response = results.reduce(((x,y) -> 
+        if y.until?
+            x + "#{y.name} is #{y.status} until #{y.until}\n"
+        else
+            x + "#{y.name} is #{y.status}\n"), "")
+    robot.logger.debug("Response: #{util.inspect(response)}")
     return res.send 'everybody should be in...' unless !!response
     res.send "#{response}" 
 
-  robot.respond /(reset|reset status)/i, (res) ->
+  ##Nightly reset
+  robot.respond /(it(\'s| is) a new day|reset|reset status|nightly)/i, (res) ->
+    results = []
+    for own key, user of robot.brain.data.users
+        untilDate = robot.brain.get("#{user.name.toLowerCase()}.ooo.until")
+        if untilDate? && moment(untilDate).isBefore(chrono.parseDate("today"))
+            robot.brain.remove("#{user.name.toLowerCase()}.ooo")
+        else
+            robot.brain.remove("#{user.name.toLowerCase()}.ooo")
+    return res.send 'It\'s a new day!\nEveyone\'s in who should be in!'
+    
+   robot.respond /(?:HARDRESET)/, (res) ->
     results = []
     for own key, user of robot.brain.data.users
       robot.brain.remove("#{user.name.toLowerCase()}.ooo")
     return res.send 'status reset, everybody should be in...'
+
+setUntilDate = (robot, res, statusMessage) ->
     
+    user = res.message.user.name.toLowerCase()
+    robot.brain.set("#{user}.ooo", statusMessage)
+        
+    if res.match[1] is null or res.match[1] is "" or res.match[1] is undefined
+        # robot.logger.debug("Brain Full: #{util.inspect(robot.brain)}");
+        brain = robot.brain.userForName(user)
+        # robot.logger.debug("Brain Status: #{util.inspect(brain)}");
+        return res.reply(statusMessage)
+    else
+        statusEndTime = chrono.parseDate(res.match[1])
+        robot.logger.debug("Status Until: #{statusEndTime}")
+        if moment(statusEndTime).isBefore(chrono.parseDate("today"))
+            robot.logger.debug('Date before today, setting to next date') 
+            statusEndTime = chrono.parseDate("next #{res.match[1]}")
+            robot.logger.debug("new endTime = #{statusEndTime}")  
+        robot.brain.set("#{user}.ooo.until", statusEndTime)
+        brain = robot.brain.get("#{user}.ooo.until")
+        robot.logger.debug("Brain Status: #{util.inspect(brain)}");
+        return res.reply "#{statusMessage} until #{statusEndTime}"
+

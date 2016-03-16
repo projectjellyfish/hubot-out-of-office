@@ -1,4 +1,6 @@
 chai = require 'chai'
+chrono = require('chrono-node')
+
 Helper = require('hubot-test-helper')
 helper = new Helper('./../src/out-of-office.coffee')
 
@@ -20,6 +22,13 @@ describe 'users go out of office', ->
     it 'responds that alice is out of of office', ->
       expect(room.messages).to.include.something.eql ['hubot', '@alice out of office']   
   
+  describe 'alice goes out of office for a period of time', ->
+    beforeEach ->
+      room.user.say 'alice', 'hubot I\'m ooo until next Wednesday'
+    it "responds that alice is out of of office until #{chrono.parseDate("next Wednesday")}", ->
+      expect(room.messages).to.include.something.eql ['hubot', "@alice out of office until #{chrono.parseDate("next Wednesday")}"]   
+ 
+ 
   describe 'bob goes out of office', ->
     beforeEach ->
       room.user.say 'bob', 'hubot I\'m out of office'
