@@ -5,10 +5,10 @@
 #   LIST_OF_ENV_VARS_TO_SET
 #
 # Commands:
-#   hubot I am out of office|ooo <until date> - tell hubot you are out of the office
+#   hubot I am out of office | ooo <until date> - tell hubot you are out of the office
 #   hubot I am on holiday <until date> - tell hubot you are on holiday (e.g. until next Friday)
-#   hubot I am working from home <until date> - tell hubot you are working from home (e.g. until tomorrow)
-#   hubot I am traveling|ot <until date> - tell hubot you are on business travel (e.g. until 12/31/16)
+#   hubot I am working from home | wfh <until date> - tell hubot you are working from home (e.g. until tomorrow)
+#   hubot I am traveling | ot <until date> - tell hubot you are on business travel (e.g. until 12/31/16)
 #   hubot I am sick <until date> - tell hubot you are sick (e.g. until Monday)
 #   hubot I am back - tell hubot you are back
 #   hubot Where is everybody? - ask hubot where everybody is
@@ -24,12 +24,7 @@
 # Author:
 #   Jason Nichols (jasonnic@gmail.com)  
 #      orig - Andrew Braithwaite <andrew.braithwaite@laterooms.com>
-#robot.respond /open the (.*) doors/i, (res) ->
-    # doorType = res.match[1]
-    # if doorType is "pod bay"
-    #   res.reply "I'm afraid I can't let you do that."
-    # else
-    #   res.reply "Opening #{doorType} doors" 
+#
 chrono = require 'chrono-node'
 moment = require 'moment'
 util = require 'util'
@@ -112,10 +107,13 @@ module.exports = (robot) ->
     else
         return res.send 'It\'s a new day!\nThe entire team is in!'
     
-   robot.respond /(?:HARDRESET)/, (res) ->
-    results = []
+   robot.respond /(HARDRESET)/, (res) ->
     for own key, user of robot.brain.data.users
       robot.brain.remove("#{user.name.toLowerCase()}.ooo")
+      robot.brain.remove("#{user.name.toLowerCase()}.ooo.until")
+
+    
+    robot.logger.debug("Brain Status: #{util.inspect(robot.brain)}")
     return res.send 'Forced Reset Done, everybody is in!'
 
 

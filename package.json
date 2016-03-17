@@ -1,8 +1,8 @@
 {
   "name": "hubot-out-of-office",
   "description": "Keeps track of who is working from home, who is out of the office, and who is on holiday",
-  "version": "0.0.8",
-  "author": "Andrew Braithwaite <andrew@losd.info>",
+  "version": "0.1.0",
+  "author": "Jason Nichols<jasonnic@gmail.com>",
   "license": "MIT",
   "keywords": "hubot, hubot-scripts, holiday, ooo, wfh",
   "repository": {
@@ -10,7 +10,7 @@
     "url": "git://github.com/typingincolor/hubot-out-of-office.git"
   },
   "bugs": {
-    "url": "https://github.com/typingincolor/hubot-out-of-office/issues"
+    "url": "https://github.com/projectjellyfish/hubot-out-of-office/issues"
   },
   "peerDependencies": {
     "hubot": "2.x"

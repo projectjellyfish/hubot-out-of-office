@@ -64,8 +64,8 @@ context 'reset status for everyone', ->
         room.user.say 'grace', 'hubot reset'        
         
       it 'responds that everybody is in, except for Jason', ->
-        console.log("We got: #{room.messages}")
-        console.log("We expected: #{resetExpected}")
+        #console.log("We got: #{room.messages}")
+        #console.log("We expected: #{resetExpected}")
         expect(room.messages).to.include.something.eql ['hubot', "#{resetExpected}"]
    
   describe 'everyone\'s status is hard reset', ->
@@ -74,7 +74,7 @@ context 'reset status for everyone', ->
         room.user.say 'grace', 'hubot HARDRESET'        
         
       it 'Forced Reset Done, everybody is in!', ->
-        console.log("We got: #{room.messages}")
-        console.log("We expected: #{resetExpected}")
+        #console.log("We got: #{room.messages}")
+        #console.log("We expected: #{resetExpected}")
         expect(room.messages).to.include.something.eql ['hubot', "Forced Reset Done, everybody is in!"]
-
+        
