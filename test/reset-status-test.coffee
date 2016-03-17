@@ -1,14 +1,16 @@
 chai = require 'chai'
 Helper = require('hubot-test-helper')
-helper = new Helper('./../src/out-of-office.coffee')
 chrono = require 'chrono-node'
+moment = require 'moment'
+momentFormat = 'ddd MMM D YYYY [at] HH:mm'
 
+helper = new Helper('./../src/out-of-office.coffee')
 expect = chai.expect
 chai.use(require('chai-things'))
 
 room = null
-expected = "Alice Smith is on holiday\nBob Jones is out of office\nJohn Smith is on business travel\nAndrew Davies is working from home\nJason Voorhees is on business travel until #{chrono.parseDate('12/31/16')}\n"
-
+expected = "Alice Smith is on holiday\nBob Jones is out of office\nJohn Smith is on business travel\nAndrew Davies is working from home\nJason Voorhees is on business travel until #{moment(chrono.parseDate('12/31/16')).format(momentFormat)}\n"
+resetExpected = "It's a new day!  The team is in except for:\nJason Voorhees is on business travel until #{moment(chrono.parseDate('12/31/16')).format(momentFormat)}\n"
 context 'reset status for everyone', ->
   beforeEach ->
     room = helper.createRoom()
@@ -51,17 +53,28 @@ context 'reset status for everyone', ->
         room.user.say 'alice', 'hubot where\'s everybody?'
 
       it 'should respond that Alice, John, Bob and Andrew are out', ->
-        console.log(room.messages)
-        console.log(expected)
+        # console.log(room.messages)
+        # console.log(expected)
         expect(room.messages).to.include.something.eql ['hubot', "#{expected}"]
 
    
-  describe 'everyone\'s status is reset to in', ->
+  describe 'everyone\'s status is reset to in except for Jason', ->
     describe 'grace resets status', ->
       beforeEach ->
         room.user.say 'grace', 'hubot reset'        
         
-      it 'responds that everybody is in', ->
-        # console.log(room.messages)
-        expect(room.messages).to.include.something.eql ['hubot', "It\'s a new day!\nEveyone\'s in who should be in!"]
+      it 'responds that everybody is in, except for Jason', ->
+        console.log("We got: #{room.messages}")
+        console.log("We expected: #{resetExpected}")
+        expect(room.messages).to.include.something.eql ['hubot', "#{resetExpected}"]
+   
+  describe 'everyone\'s status is hard reset', ->
+    describe 'grace resets status', ->
+      beforeEach ->
+        room.user.say 'grace', 'hubot HARDRESET'        
+        
+      it 'Forced Reset Done, everybody is in!', ->
+        console.log("We got: #{room.messages}")
+        console.log("We expected: #{resetExpected}")
+        expect(room.messages).to.include.something.eql ['hubot', "Forced Reset Done, everybody is in!"]
 

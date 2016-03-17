@@ -5,8 +5,12 @@ chrono = require 'chrono-node'
 expect = chai.expect
 chai.use(require('chai-things'))
 
+moment = require 'moment'
+momentFormat = 'ddd MMM D YYYY [at] HH:mm'
+
+
 room = null
-expected = "Alice Smith is on holiday until #{chrono.parseDate('12/31/16')}\nBob Jones is out of office\nJohn Smith is on business travel\nAndrew Davies is working from home\n"
+expected = "Alice Smith is on holiday until #{moment(chrono.parseDate('12/31/16')).format(momentFormat)}\nBob Jones is out of office\nJohn Smith is on business travel\nAndrew Davies is working from home\n"
 console.log ("Expected #{expected}")
 context 'where is everybody', ->
   beforeEach ->
@@ -37,12 +41,14 @@ context 'where is everybody', ->
   afterEach ->
     room.destroy()
 
-  describe 'alice is on holiday, bob is out of office, john is on travel,  and andrew is working from home', ->
+  describe 'alice is on holiday until the end of the year, bob is out of office, john is on travel,  and andrew is working from home', ->
     describe 'alice asks where everybody is', ->
       beforeEach ->
         room.user.say 'alice', 'hubot where\'s everybody?'
 
       it 'should respond that Alice, John, Bob and Andrew are out', ->
+        console.log("We got: #{room.messages}")
+        console.log("We expected: #{expected}")
         expect(room.messages).to.include.something.eql ['hubot', "#{expected}"]
 
     describe 'bob asks where everybody is', ->    
